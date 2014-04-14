@@ -1,6 +1,8 @@
 <?php
 
 namespace Phpro\Apigility\Doctrine\Bulk\Listener;
+
+use ReflectionMethod;
 use Phpro\Apigility\Doctrine\Bulk\Event\BulkEvent;
 use Phpro\Apigility\Doctrine\Bulk\Model\Result;
 use Zend\EventManager\EventManagerInterface;
@@ -12,12 +14,15 @@ use Zend\EventManager\EventManagerInterface;
  */
 class CustomCommandListener extends AbstractListener
 {
+
+    const EVENT_PRIORITY = 0;
+
     /**
      * {@inheritDoc}
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('*', [$this, 'handle'], 0);
+        $this->listeners[] = $events->attach('*', [$this, 'handle'], self::EVENT_PRIORITY);
     }
 
     /**
@@ -34,9 +39,32 @@ class CustomCommandListener extends AbstractListener
             return false;
         }
 
+        $this->runCommand($command, $entity, $event->getParams());
         $this->saveEntity($entity);
+
         $event->stopPropagation(true);
         return $this->createResult($command, $entity);
+    }
+
+    /**
+     * @param $command
+     * @param $entity
+     * @param $methodParams
+     */
+    protected function runCommand($command, $entity, $methodParams)
+    {
+        $rm = new ReflectionMethod($entity, $command);
+
+        $args = [];
+        foreach ($rm->getParameters() as $param) {
+            if (array_key_exists(strtolower($param->getName()), $methodParams)) {
+                $args[] = $methodParams[strtolower($param->getName())];
+            } else {
+                $args[] = $param->getDefaultValue();
+            }
+        }
+
+        $rm->invokeArgs($entity, $args);
     }
 
 } 
