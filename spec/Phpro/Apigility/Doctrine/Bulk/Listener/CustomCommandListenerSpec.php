@@ -24,17 +24,17 @@ class CustomCommandListenerSpec extends AbstractListenerSpec
      * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
      * @param \Zend\Stdlib\Hydrator\HydratorInterface $hydrator
      * @param \Phpro\Apigility\Doctrine\Bulk\Event\BulkEvent $event
-     * @param stdClass $entity
+     * @param \Zend\Stdlib\Message $entity
      */
     public function it_should_handle_custom_events($objectManager, $hydrator, $event, $entity)
     {
         $this->stubLoadEntity($objectManager, $entity);
         $this->mockSaveEntity($objectManager);
 
-        $event->getName()->willReturn('changeEmail');
-        $event->getParams()->willReturn(['id' => 1, 'email' => 'test@test.com']);
+        $event->getName()->willReturn('setContent');
+        $event->getParams()->willReturn(['id' => 1, 'value' => 'content']);
         $event->stopPropagation(true)->shouldBeCalled();
-        $entity->changeEmail('test@test.com')->shouldBeCalled();
+        $entity->setContent('content')->shouldBeCalled();
 
         $result = $this->handle($event);
         $result->shouldBeAnInstanceOf('Phpro\Apigility\Doctrine\Bulk\Model\Result');
