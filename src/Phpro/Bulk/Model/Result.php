@@ -1,6 +1,7 @@
 <?php
 
 namespace Phpro\Apigility\Doctrine\Bulk\Model;
+use Zend\Stdlib\JsonSerializable;
 
 /**
  * Class Result
@@ -8,6 +9,7 @@ namespace Phpro\Apigility\Doctrine\Bulk\Model;
  * @package Phpro\Apigility\Doctrine\Bulk\Model
  */
 class Result
+    implements JsonSerializable
 {
 
     /**
@@ -58,4 +60,19 @@ class Result
         $this->error = $error;
     }
 
-} 
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'command' => $this->command,
+            'id' => $this->id,
+            'params' => $this->params,
+            'isSuccess' => !$this->error,
+            'isError' => !!$this->error,
+            'error' => $this->error,
+        ];
+    }
+
+}
