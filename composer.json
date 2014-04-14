@@ -20,6 +20,7 @@
     "zfcampus/zf-apigility": "~1.0-dev",
     "zfcampus/zf-apigility-doctrine": "dev-master",
     "zendframework/zend-mvc": "2.*",
+    "zendframework/zend-eventmanager": "2.*",
     "zendframework/zend-modulemanager": "2.*",
     "zendframework/zend-servicemanager": "2.*",
     "zendframework/zend-stdlib": "2.*"
