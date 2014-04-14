@@ -33,8 +33,10 @@
     "fabpot/PHP-CS-Fixer": "*"
   },
   "autoload": {
+    "psr-0": {
+      "Phpro\\Apigility\\Doctrine\\Bulk\\": "src/"
+    },
     "psr-4": {
-      "Phpro\\Apigility\\Doctrine\\Bulk\\": "src/Phpro/Bulk/",
       "spec\\Apigility\\Doctrine\\Bulk\\": "spec/Phpro/Bulk/"
     }
   }
