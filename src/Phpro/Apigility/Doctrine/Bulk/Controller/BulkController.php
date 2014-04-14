@@ -35,7 +35,7 @@ class BulkController
     {
         $data = $this->bodyParams();
         if (!is_array($data)) {
-            throw new ApiProblem(500, 'Invalid body');
+            return new ApiProblem(500, 'Invalid body');
         }
 
         $result = $this->bulkService->bulk($data);
