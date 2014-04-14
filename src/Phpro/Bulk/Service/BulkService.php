@@ -57,11 +57,10 @@ class BulkService
      */
     protected function attachDefaultListeners()
     {
-        $events = $this->getEventManager();
-        $events->attach(new Listener\CreateListener($this->objectManager, $this->className, $this->hydrator));
-        $events->attach(new Listener\UpdateListener($this->objectManager, $this->className, $this->hydrator));
-        $events->attach(new Listener\DeleteListener($this->objectManager, $this->className, $this->hydrator));
-        $events->attach(new Listener\CustomCommandListener($this->objectManager, $this->className, $this->hydrator));
+        $this->events->attach(new Listener\CreateListener($this->objectManager, $this->className, $this->hydrator));
+        $this->events->attach(new Listener\UpdateListener($this->objectManager, $this->className, $this->hydrator));
+        $this->events->attach(new Listener\DeleteListener($this->objectManager, $this->className, $this->hydrator));
+        $this->events->attach(new Listener\CustomCommandListener($this->objectManager, $this->className, $this->hydrator));
     }
 
     /**

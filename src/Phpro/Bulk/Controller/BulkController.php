@@ -2,6 +2,7 @@
 
 namespace Phpro\Apigility\Doctrine\Bulk\Controller;
 use Phpro\Apigility\Doctrine\Bulk\Service\BulkService;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -10,6 +11,7 @@ use Zend\View\Model\JsonModel;
  * @package Phpro\Apigility\Doctrine\Bulk\Controller
  */
 class BulkController
+    extends AbstractActionController
 {
 
     /**
