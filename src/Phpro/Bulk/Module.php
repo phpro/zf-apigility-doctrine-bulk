@@ -1,7 +1,6 @@
 <?php
 namespace Phpro\Apigility\Doctrine\Bulk;
 
-use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 

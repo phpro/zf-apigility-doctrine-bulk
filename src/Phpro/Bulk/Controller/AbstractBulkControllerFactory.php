@@ -5,7 +5,6 @@ namespace Phpro\Apigility\Doctrine\Bulk\Controller;
 use Phpro\Apigility\Doctrine\Bulk\Service\BulkService;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
@@ -35,28 +34,18 @@ class AbstractBulkControllerFactory implements AbstractFactoryInterface
             return $this->lookupCache[$requestedName];
         }
 
-        if (!$serviceLocator->has('Config')) {
+        $serviceManager = $serviceLocator->getServiceLocator();
+        if (!$serviceManager->has('Config')) {
             return false;
         }
 
         // Validate object is set
-        $config = $serviceLocator->get('Config');
+        $config = $serviceManager->get('Config');
         if (!isset($config['zf-apigility'][self::CONFIG_NAMESPACE])
             || !is_array($config['zf-apigility'][self::CONFIG_NAMESPACE])
             || !isset($config['zf-apigility'][self::CONFIG_NAMESPACE][$requestedName])) {
             $this->lookupCache[$requestedName] = false;
-
             return false;
-        }
-
-        // Validate object manager
-        $config = $config['zf-apigility'][self::CONFIG_NAMESPACE];
-        if (!isset($config[$requestedName]) || !isset($config[$requestedName]['object_manager'])) {
-            throw new ServiceNotFoundException(sprintf(
-                '%s requires that a valid "object_manager" is specified for listener %s; no service found',
-                __METHOD__,
-                $requestedName
-            ));
         }
 
         $this->lookupCache[$requestedName] = true;
@@ -68,59 +57,109 @@ class AbstractBulkControllerFactory implements AbstractFactoryInterface
      */
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-
-        $config   = $serviceLocator->get('Config');
+        // Load configuration:
+        $serviceManager = $serviceLocator->getServiceLocator();
+        $config   = $serviceManager->get('Config');
         $config   = $config['zf-apigility'][self::CONFIG_NAMESPACE][$requestedName];
 
-        $className = $config['class'];
-        $listeners = $config['listeners'] ? $config['listeners'] : [];
-        $objectManager = $this->loadObjectManager($serviceLocator, $config);
-        $hydrator = $this->loadHydrator($serviceLocator, $config);
+        // Load dependencies
+        $className = $this->loadEntityClass($config);
+        $objectManager = $this->loadObjectManager($serviceManager, $config);
+        $hydrator = $this->loadHydrator($serviceManager, $config);
+        $listeners = $this->loadListeners($serviceManager, $config);
 
+        // Configure a bulk service
         $bulkService = new BulkService($objectManager, $className, $hydrator);
-        foreach ($listeners as $listener) {
-            if (!$serviceLocator->has($listener)) {
-                throw new ServiceNotCreatedException(sprintf('Invalid bulk listener %s', $listener));
-            }
-            $bulkService->getEventManager()->attach($serviceLocator->get($listener));
+        if (count($listeners)) {
+            $bulkService->getEventManager()->attach($listeners);
         }
 
-        $controller = new BulkController($bulkService);
+        // Initialize controller
+        $className = isset($config['entity']) ? $config['class'] : $requestedName;
+        $className = $this->normalizeClassname($className);
+        $controller = new $className($bulkService);
         return $controller;
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param $className
+     *
+     * @return string
+     */
+    protected function normalizeClassname($className)
+    {
+        return '\\' . ltrim($className, '\\');
+    }
+
+
+    /**
+     * @param $config
+     *
+     * @return mixed
+     * @throws \Zend\ServiceManager\Exception\ServiceNotCreatedException
+     */
+    protected function loadEntityClass($config)
+    {
+        if (!isset($config['entity_class'])) {
+            throw new ServiceNotCreatedException('The entity_class could not be found.');
+        }
+        return $config['entity_class'];
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceManager
      * @param                         $config
      *
      * @return array|object
      * @throws ServiceNotCreatedException
      */
-    protected function loadObjectManager(ServiceLocatorInterface $serviceLocator, $config)
+    protected function loadObjectManager(ServiceLocatorInterface $serviceManager, $config)
     {
-        if ($serviceLocator->has($config['object_manager'])) {
-            $objectManager = $serviceLocator->get($config['object_manager']);
-        } else {
+        if (!isset($config['object_manager']) || !$serviceManager->has($config['object_manager'])) {
             throw new ServiceNotCreatedException('The object_manager could not be found.');
+
         }
+
+        $objectManager = $serviceManager->get($config['object_manager']);
         return $objectManager;
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceManager
      * @param                         $config
      *
      * @return HydratorInterface
      * @throws \Zend\ServiceManager\Exception\ServiceNotCreatedException
      */
-    protected function loadHydrator(ServiceLocatorInterface $serviceLocator, $config)
+    protected function loadHydrator(ServiceLocatorInterface $serviceManager, $config)
     {
-        $hydratorManager = $serviceLocator->has('HydratorManager');
+        $hydratorManager = $serviceManager->has('HydratorManager');
         if (!isset($config['hydrator']) || !$hydratorManager->has($config['hydrator'])) {
             throw new ServiceNotCreatedException(sprintf('Invalid hydrator specified: %s', $config['hydrator']);
         }
 
         return $hydratorManager->get($config['hydrator']);
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceManager
+     * @param                         $config
+     *
+     * @return array
+     * @throws \Zend\ServiceManager\Exception\ServiceNotCreatedException
+     */
+    protected function loadListeners(ServiceLocatorInterface $serviceManager, $config)
+    {
+        $result = [];
+        $listeners = isset($config['listeners']) ? $config['listeners'] : [];
+
+        foreach ($listeners as $listener) {
+            if (!$serviceManager->has($listener)) {
+                throw new ServiceNotCreatedException(sprintf('Invalid bulk listener %s', $listener));
+            }
+            $result[] = $serviceManager->get($listener);
+        }
+        return $result;
     }
 
 }
