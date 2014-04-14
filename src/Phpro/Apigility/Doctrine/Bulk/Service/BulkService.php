@@ -77,7 +77,7 @@ class BulkService
 
             $results[] = $this->handleCommand($command, $params);
         }
-        return [];
+        return $results;
     }
 
     /**

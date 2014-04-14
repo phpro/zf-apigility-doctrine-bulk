@@ -38,7 +38,7 @@ class UpdateListener extends AbstractListener
         $patchedData = array_merge($originalData, (array) $data);
 
         $this->hydrator->hydrate($patchedData, $entity);
-        $this->saveEntity($event);;
+        $this->saveEntity($entity);;
 
         $event->stopPropagation(true);
         return $this->createResult(self::EVENT_NAME, $entity);

@@ -1,2 +1,2 @@
 <?php
-require __DIR__ . '/src/Phpro/Bulk/Module.php';
+require __DIR__ . '/src/Phpro/Apigility/Doctrine/Bulk/Module.php';

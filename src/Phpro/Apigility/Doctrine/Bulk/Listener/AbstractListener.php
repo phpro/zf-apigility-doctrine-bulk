@@ -51,8 +51,11 @@ abstract class AbstractListener extends AbstractListenerAggregate
      */
     protected function loadEntity(BulkEvent $e)
     {
+        $meta = $this->objectManager->getClassMetadata($this->className);
+        $identifier = current($meta->getIdentifierFieldNames());
+
         $params = $e->getParams();
-        $id = isset($params['id']) ? $params['id'] : 0;
+        $id = isset($params[$identifier]) ? $params[$identifier] : 0;
         $entity = $this->objectManager->find($this->className, $id);
 
         if (!$entity) {

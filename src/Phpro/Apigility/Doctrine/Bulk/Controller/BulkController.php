@@ -4,6 +4,7 @@ namespace Phpro\Apigility\Doctrine\Bulk\Controller;
 use Phpro\Apigility\Doctrine\Bulk\Service\BulkService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use ZF\ApiProblem\ApiProblem;
 
 /**
  * Class BulkController
@@ -28,13 +29,13 @@ class BulkController
     }
 
     /**
-     * @throws \Exception
+     * @throws ApiProblem
      */
     public function bulkAction()
     {
         $data = $this->bodyParams();
         if (!is_array($data)) {
-            throw new \Exception('Invalid body');
+            throw new ApiProblem('Invalid body');
         }
 
         $result = $this->bulkService->bulk($data);

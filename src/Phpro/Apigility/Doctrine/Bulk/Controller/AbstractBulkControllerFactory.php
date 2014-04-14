@@ -71,7 +71,9 @@ class AbstractBulkControllerFactory implements AbstractFactoryInterface
         // Configure a bulk service
         $bulkService = new BulkService($objectManager, $className, $hydrator);
         if (count($listeners)) {
-            $bulkService->getEventManager()->attach($listeners);
+            foreach ($listeners as $listener) {
+                $bulkService->getEventManager()->attach($listener);
+            }
         }
 
         // Initialize controller
@@ -133,9 +135,9 @@ class AbstractBulkControllerFactory implements AbstractFactoryInterface
      */
     protected function loadHydrator(ServiceLocatorInterface $serviceManager, $config)
     {
-        $hydratorManager = $serviceManager->has('HydratorManager');
+        $hydratorManager = $serviceManager->get('HydratorManager');
         if (!isset($config['hydrator']) || !$hydratorManager->has($config['hydrator'])) {
-            throw new ServiceNotCreatedException(sprintf('Invalid hydrator specified: %s', $config['hydrator']);
+            throw new ServiceNotCreatedException(sprintf('Invalid hydrator specified: %s', $config['hydrator']));
         }
 
         return $hydratorManager->get($config['hydrator']);

@@ -3,9 +3,7 @@
 namespace Phpro\Apigility\Doctrine\Bulk\Listener;
 
 use Phpro\Apigility\Doctrine\Bulk\Event\BulkEvent;
-use Zend\Db\Adapter\Driver\Pdo\Result;
 use Zend\EventManager\EventManagerInterface;
-use ZF\ApiProblem\ApiProblem;
 
 /**
  * Class CreateListener
@@ -47,7 +45,7 @@ class CreateListener extends AbstractListener
         $entity = $this->loadEntity($event);
 
         $this->hydrator->hydrate((array) $data, $entity);
-        $this->saveEntity($event);
+        $this->saveEntity($entity);
 
         $event->stopPropagation(true);
         return $this->createResult(self::EVENT_NAME, $entity);
