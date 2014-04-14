@@ -1,6 +1,6 @@
 {
   "name": "phpro/zf-apigility-doctrine-bulk",
-  "description": "A module that enables an extendable and fast way of adding bulk actions to the doctrine apigility module.",
+  "description": "A module that provides an extendable and fast way of adding bulk actions to the doctrine apigility module.",
   "keywords": [
     "apigility",
     "bulk",
