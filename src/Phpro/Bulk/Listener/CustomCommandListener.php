@@ -39,17 +39,26 @@ class CustomCommandListener extends AbstractListener
             return false;
         }
 
-        $this->runCommand($command, $entity, $event->getParams());
+        $response = $this->runCommand($command, $entity, $event->getParams());
         $this->saveEntity($entity);
 
         $event->stopPropagation(true);
-        return $this->createResult($command, $entity);
+        $result = $this->createResult($command, $entity);
+
+        // Add params:
+        if (is_array($response)) {
+            $result->addParams($response);
+        }
+
+        return $result;
     }
 
     /**
      * @param $command
      * @param $entity
      * @param $methodParams
+     *
+     * @return mixed
      */
     protected function runCommand($command, $entity, $methodParams)
     {
@@ -64,7 +73,7 @@ class CustomCommandListener extends AbstractListener
             }
         }
 
-        $rm->invokeArgs($entity, $args);
+        return $rm->invokeArgs($entity, $args);
     }
 
 } 
