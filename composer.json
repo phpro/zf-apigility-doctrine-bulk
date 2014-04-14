@@ -1,0 +1,40 @@
+{
+  "name": "phpro/zf-apigility-doctrine-bulk",
+  "description": "A module that enables an extendable and fast way of adding bulk actions to the doctrine apigility module.",
+  "keywords": [
+    "apigility",
+    "bulk",
+    "doctrine",
+    "module",
+    "zf2"
+  ],
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Toon Verwerft",
+      "email": "toon.verwerft@phpro.be"
+    }
+  ],
+  "require": {
+    "phpro/zf-doctrine-hydration-module": "dev-master",
+    "zfcampus/zf-apigility": "~1.0-dev",
+    "zfcampus/zf-apigility-doctrine": "dev-master",
+    "zendframework/zend-mvc": "2.*",
+    "zendframework/zend-modulemanager": "2.*",
+    "zendframework/zend-servicemanager": "2.*",
+    "zendframework/zend-stdlib": "2.*"
+  },
+  "require-dev": {
+    "doctrine/doctrine-orm-module": "*",
+    "doctrine/doctrine-mongo-odm-module": "*",
+    "doctrine/mongodb-odm": "1.0.0-beta9@dev",
+    "phpspec/phpspec": "dev-master",
+    "fabpot/PHP-CS-Fixer": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phpro\\Apigility\\Doctrine\\Bulk\\": "src/Phpro/Bulk",
+      "spec\\Apigility\\Doctrine\\Bulk\\": "spec/Phpro/Bulk/"
+    }
+  }
+}
