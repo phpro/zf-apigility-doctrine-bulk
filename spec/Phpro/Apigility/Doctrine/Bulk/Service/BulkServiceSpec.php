@@ -49,7 +49,7 @@ class BulkServiceSpec extends ObjectBehavior
 
         // Mock EventManager
         $this->setEventManager($eventManager);
-        $eventManager->trigger(Argument::that(function($argument) use ($params) {
+        $eventManager->trigger(Argument::that(function ($argument) use ($params) {
             return $argument instanceof BulkEvent
                 && $argument->getName() == 'create'
                 && $argument->getParams() == $params;
