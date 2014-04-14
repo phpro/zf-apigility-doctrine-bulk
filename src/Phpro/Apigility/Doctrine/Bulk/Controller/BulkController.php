@@ -35,7 +35,8 @@ class BulkController
     {
         $data = $this->bodyParams();
         if (!is_array($data)) {
-            return new ApiProblem(500, 'Invalid body');
+            $exception = new ApiProblem(500, 'Invalid body');
+            return new JsonModel($exception->toArray());
         }
 
         $result = $this->bulkService->bulk($data);
