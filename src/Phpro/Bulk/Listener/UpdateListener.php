@@ -43,4 +43,4 @@ class UpdateListener extends AbstractListener
         $event->stopPropagation(true);
         return $this->createResult(self::EVENT_NAME, $entity);
     }
-} 
+}

@@ -90,7 +90,7 @@ class BulkService
     {
         try {
             $event = new BulkEvent($command, $this, $params);
-            $response = $this->getEventManager()->trigger($event, function($result) {
+            $response = $this->getEventManager()->trigger($event, function ($result) {
                 return $result instanceof Result;
             });
 

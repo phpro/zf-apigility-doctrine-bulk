@@ -34,7 +34,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Phpro\\Apigility\\Doctrine\\Bulk\\": "src/Phpro/Bulk",
+      "Phpro\\Apigility\\Doctrine\\Bulk\\": "src/Phpro/Bulk/",
       "spec\\Apigility\\Doctrine\\Bulk\\": "spec/Phpro/Bulk/"
     }
   }

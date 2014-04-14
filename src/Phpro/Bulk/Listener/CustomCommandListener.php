@@ -76,4 +76,4 @@ class CustomCommandListener extends AbstractListener
         return $rm->invokeArgs($entity, $args);
     }
 
-} 
+}

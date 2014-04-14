@@ -85,4 +85,4 @@ abstract class AbstractListener extends AbstractListenerAggregate
         return new Result($command, current($identifiers));
     }
 
-} 
+}

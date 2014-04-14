@@ -41,4 +41,4 @@ class BulkController
         $response = new JsonModel($result);
         return $response;
     }
-} 
+}
