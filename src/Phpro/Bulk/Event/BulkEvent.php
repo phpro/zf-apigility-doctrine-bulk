@@ -11,5 +11,4 @@ use Zend\EventManager\Event;
 class BulkEvent extends Event
 {
 
-
-} 
+}

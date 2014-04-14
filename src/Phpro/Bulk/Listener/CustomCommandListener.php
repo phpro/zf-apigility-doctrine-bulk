@@ -2,6 +2,7 @@
 
 namespace Phpro\Apigility\Doctrine\Bulk\Listener;
 use Phpro\Apigility\Doctrine\Bulk\Event\BulkEvent;
+use Phpro\Apigility\Doctrine\Bulk\Model\Result;
 use Zend\EventManager\EventManagerInterface;
 
 /**
@@ -21,9 +22,21 @@ class CustomCommandListener extends AbstractListener
 
     /**
      * @param BulkEvent $event
+     *
+     * @return bool|Result
      */
     public function handle(BulkEvent $event)
     {
+        $entity = $this->loadEntity($event);
+        $command = $event->getName();
 
+        if (!method_exists($entity, $command)) {
+            return false;
+        }
+
+        $this->saveEntity($entity);
+        $event->stopPropagation(true);
+        return $this->createResult($command, $entity);
     }
+
 } 
