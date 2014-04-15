@@ -30,7 +30,7 @@ class DeleteListenerSpec extends AbstractListenerSpec
     {
         $this->stubLoadEntity($objectManager, $entity);
         $objectManager->remove($entity)->shouldBeCalled();
-        $objectManager->flush($entity)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $event->getParams()->willReturn(['id' => 1]);
         $event->stopPropagation(true)->shouldBeCalled();

@@ -32,7 +32,7 @@ class DeleteListener extends AbstractListener
     {
         $entity = $this->loadEntity($event);
         $this->objectManager->remove($entity);
-        $this->objectManager->flush($entity);
+        $this->objectManager->flush();
 
         $event->stopPropagation(true);
         return $this->createResult(self::EVENT_NAME, $entity);
