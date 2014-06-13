@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "phpro/zf-doctrine-hydration-module": "dev-master",
+    "phpro/zf-doctrine-hydration-module": "0.1.*",
     "zfcampus/zf-apigility": "~1.0-dev",
     "zfcampus/zf-apigility-doctrine": "dev-master",
     "zendframework/zend-mvc": "2.*",
@@ -28,7 +28,7 @@
   "require-dev": {
     "doctrine/doctrine-orm-module": "*",
     "doctrine/doctrine-mongo-odm-module": "*",
-    "doctrine/mongodb-odm": "1.0.0-beta9@dev",
+    "doctrine/mongodb-odm": "~1.0.0-beta9@dev",
     "phpspec/phpspec": "dev-master",
     "fabpot/PHP-CS-Fixer": "*"
   },
