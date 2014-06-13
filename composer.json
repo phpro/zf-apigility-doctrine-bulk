@@ -8,7 +8,6 @@
     "module",
     "zf2"
   ],
-  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Toon Verwerft",
@@ -17,8 +16,9 @@
   ],
   "require": {
     "phpro/zf-doctrine-hydration-module": "~0.1.0",
-    "zfcampus/zf-apigility": "~1.0-dev",
+    "zfcampus/zf-apigility": "~1.0",
     "zfcampus/zf-apigility-doctrine": "dev-master",
+    "zfcampus/zf-configuration": "dev-develop",
     "zendframework/zend-mvc": "2.*",
     "zendframework/zend-eventmanager": "2.*",
     "zendframework/zend-modulemanager": "2.*",
