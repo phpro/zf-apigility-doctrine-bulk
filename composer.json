@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "phpro/zf-doctrine-hydration-module": "0.1.*",
+    "phpro/zf-doctrine-hydration-module": "~0.1.0",
     "zfcampus/zf-apigility": "~1.0-dev",
     "zfcampus/zf-apigility-doctrine": "dev-master",
     "zendframework/zend-mvc": "2.*",
