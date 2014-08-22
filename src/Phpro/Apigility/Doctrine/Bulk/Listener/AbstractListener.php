@@ -48,6 +48,7 @@ abstract class AbstractListener extends AbstractListenerAggregate
      * @param BulkEvent $e
      *
      * @return object
+     * @throws
      */
     protected function loadEntity(BulkEvent $e)
     {
@@ -59,7 +60,7 @@ abstract class AbstractListener extends AbstractListenerAggregate
         $entity = $this->objectManager->find($this->className, $id);
 
         if (!$entity) {
-            return new ApiProblem(404, 'Entity with id ' . $id . ' was not found');
+            throw new \RuntimeException('Entity with id ' . $id . ' was not found');
         }
 
         return $entity;
