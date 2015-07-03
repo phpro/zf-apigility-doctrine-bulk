@@ -34,10 +34,8 @@ class UpdateListener extends AbstractListener
         $data = $event->getParams();
         $entity = $this->loadEntity($event);
 
-        $originalData = $this->hydrator->extract($entity);
-        $patchedData = array_merge($originalData, (array) $data);
-
-        $this->hydrator->hydrate($patchedData, $entity);
+        // Patch entity:
+        $this->hydrator->hydrate((array) $data, $entity);
         $this->saveEntity($entity);;
 
         $event->stopPropagation(true);

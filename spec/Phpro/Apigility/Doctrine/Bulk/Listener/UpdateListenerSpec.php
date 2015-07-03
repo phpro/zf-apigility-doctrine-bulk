@@ -32,8 +32,7 @@ class UpdateListenerSpec extends AbstractListenerSpec
         $this->mockSaveEntity($objectManager);
 
         $event->getParams()->willReturn(['id' => 1]);
-        $hydrator->extract($entity)->willReturn(['merged' => true]);
-        $hydrator->hydrate(['id' => 1, 'merged' => true], Argument::type('stdClass'))->shouldBeCalled();
+        $hydrator->hydrate(['id' => 1], Argument::type('stdClass'))->shouldBeCalled();
         $event->stopPropagation(true)->shouldBeCalled();
 
         $result = $this->update($event);
