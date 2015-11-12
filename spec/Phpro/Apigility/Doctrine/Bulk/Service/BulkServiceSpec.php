@@ -39,8 +39,9 @@ class BulkServiceSpec extends ObjectBehavior
      * @param \Zend\EventManager\EventManager $eventManager
      * @param \Zend\EventManager\ResponseCollection $responseCollection
      * @param \Phpro\Apigility\Doctrine\Bulk\Model\Result $result
+     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
      */
-    public function it_should_hanle_bulk_commands($eventManager, $responseCollection, $result)
+    public function it_should_hanle_bulk_commands($eventManager, $responseCollection, $result, $objectManager)
     {
         $params = ['name' => 'test'];
         $commands = [
@@ -61,6 +62,8 @@ class BulkServiceSpec extends ObjectBehavior
         $response = $this->bulk($commands);
         $response->shouldHaveCount(1);
         $response[0]->shouldBe($result);
+
+        $objectManager->flush()->shouldBeCalled();
     }
 
 }

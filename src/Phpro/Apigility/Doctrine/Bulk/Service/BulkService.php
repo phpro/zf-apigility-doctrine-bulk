@@ -77,6 +77,7 @@ class BulkService
 
             $results[] = $this->handleCommand($command, $params);
         }
+        $this->objectManager->flush();
         return $results;
     }
 
