@@ -44,7 +44,6 @@ abstract class AbstractListenerSpec extends ObjectBehavior
     protected function mockSaveEntity($objectManager)
     {
         $objectManager->persist(Argument::any())->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
     }
 
     /**

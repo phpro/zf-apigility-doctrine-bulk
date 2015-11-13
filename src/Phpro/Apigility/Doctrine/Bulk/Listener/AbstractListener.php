@@ -72,7 +72,6 @@ abstract class AbstractListener extends AbstractListenerAggregate
     protected function saveEntity($entity)
     {
         $this->objectManager->persist($entity);
-        $this->objectManager->flush();
     }
 
     /**
