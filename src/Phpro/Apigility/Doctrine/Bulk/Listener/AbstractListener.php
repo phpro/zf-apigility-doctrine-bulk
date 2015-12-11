@@ -77,15 +77,25 @@ abstract class AbstractListener extends AbstractListenerAggregate
     /**
      * @param $command
      * @param $entity
+     * @param bool $addExtractedEntity
      *
      * @return Result
      */
-    protected function createResult($command, $entity)
+    protected function createResult($command, $entity, $addExtractedEntity = true)
     {
         $meta = $this->objectManager->getClassMetadata($this->className);
         $identifiers = $meta->getIdentifierValues($entity);
 
-        return new Result($command, current($identifiers));
+        $result = new Result($command, current($identifiers));
+
+        if (!$addExtractedEntity) {
+            return $result;
+        }
+
+        $data = $this->hydrator->extract($entity);
+        $result->addParams(['item' => $data]);
+
+        return $result;
     }
 
 }

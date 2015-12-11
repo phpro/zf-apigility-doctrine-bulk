@@ -43,7 +43,7 @@ class CustomCommandListener extends AbstractListener
         $this->saveEntity($entity);
 
         $event->stopPropagation(true);
-        $result = $this->createResult($command, $entity);
+        $result = $this->createResult($command, $entity, false);
 
         // Add params:
         if (is_array($response)) {

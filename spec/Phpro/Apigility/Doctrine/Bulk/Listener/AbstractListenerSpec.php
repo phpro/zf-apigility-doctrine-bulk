@@ -17,7 +17,7 @@ abstract class AbstractListenerSpec extends ObjectBehavior
     {
         $className = 'stdClass';
         $this->beConstructedWith($objectManager, $className, $hydrator);
-        $this->stubMetaData($objectManager);
+        $this->stubMetaData($objectManager, $hydrator);
     }
 
     public function it_is_a_bulk_listener()
@@ -28,12 +28,14 @@ abstract class AbstractListenerSpec extends ObjectBehavior
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
      */
-    protected function stubMetaData($objectManager)
+    protected function stubMetaData($objectManager, $hydrator)
     {
         $prophet = new Prophet();
         $meta = $prophet->prophesize('Doctrine\Common\Persistence\Mapping\ClassMetadata');
         $meta->getIdentifierFieldNames()->willReturn(['id']);
         $meta->getIdentifierValues(Argument::any())->willReturn([1]);
+
+        $hydrator->extract(Argument::type('stdClass'))->willReturn(['id' => 1]);
 
         $objectManager->getClassMetadata('stdClass')->willReturn($meta);
     }
