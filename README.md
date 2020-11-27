@@ -1,3 +1,8 @@
+> ## Repository abandoned 2020-11-27
+>
+> This repository has been archived since we are not using it anymore internally.
+> Feel free to use it AS-IS, we won't be providing any support anymore.
+
 # Apigility Doctrine Bulk Module
 This module provides an extendable and fast way of adding bulk actions to the doctrine apigility module.
 It is based on the bulk API of [elasticsearch](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-bulk.html).
